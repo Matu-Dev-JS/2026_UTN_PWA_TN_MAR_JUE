@@ -1,4 +1,5 @@
 import React from 'react'
+import LoginForm from './Components/LoginForm/LoginForm'
 
 const App = () => {
 
@@ -35,6 +36,8 @@ const App = () => {
           )
         }
       </ol>
+      <h1>Iniciar sesion</h1>
+      <LoginForm/>
     </div>
   )
 }
