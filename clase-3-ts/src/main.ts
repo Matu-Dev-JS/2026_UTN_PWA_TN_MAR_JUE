@@ -1,6 +1,6 @@
 //console.log('hola mundo')
 
-let nombre: string = 'pepe'
+/* let nombre: string = 'pepe'
 let isOpen: boolean = false
 let nota: number = 2
 let result: null = null
@@ -10,7 +10,7 @@ const PI: number = 3.14
 
 
 const nombres: string[] = ['pepe', 'juan', 'maria']
-
+ */
 //No se usa tanto...
 //const persona : [string, number] = ['pepe', 52] 
 
@@ -22,7 +22,7 @@ const nombres: string[] = ['pepe', 'juan', 'maria']
   edad: 40
 }
  */
-
+/* 
 interface Persona {
   nombre: string,
   edad: number
@@ -38,21 +38,21 @@ const persona_2: Persona = {
   edad: 30
 }
 
-const personas: Persona[] = [persona_1, persona_1]
+const personas: Persona[] = [persona_1, persona_1] */
 
 /* function calcularIva (precio: number) : number{
   let iva = precio * 0.21
   return iva
 } */
-
+/* 
 const calcularIva = (precio: number): number => {
   let iva: number = precio * 0.21
   return iva
 }
-
+ */
 
 //Dado un array de números, escribir una función que calcule la suma de todos los números del array.
-function calcularSumatoriaArray(numeros: number[]): number {
+/* function calcularSumatoriaArray(numeros: number[]): number {
   let total: number = 0;
   for (let number of numeros) {
     total = total + number;
@@ -64,7 +64,7 @@ console.log(calcularSumatoriaArray([2,2,2]))
 interface DatosRaros {
   'Respuesta': string,
   'Status HTTP': number
-}
+} */
 
 
 /* 
@@ -72,11 +72,30 @@ interface DatosRaros {
 Dado un array de nombres transformar este array en un array de personas donde cada persona tenga la propiedad nombre
 */
 
+/* const nombres_2 : string[] = ["Juan", "Maria", "Pedro"];
+interface Persona {
+  nombre: string;
+}
+function nombresAPersonas(nombres: string[]): Persona[] {
+  const personas: Persona[] = [];
+  for(let nombre of nombres){
+    personas.push({nombre: nombre})
+  }
+  return personas;
+} */
+
 /* 
 21:45 
 Dado un array de números, escribir una función que devuelva un array con todos los números mayores a 10.
 */
-
+/* const numeros: number[] = [1, 8, 16, 24, 32];
+function mayoresDeDiez(numeros: number[]): number[] {
+  const mayores: number[] = numeros.filter((num) => num > 10);
+  return mayores;
+}
+const mayores: number[] = mayoresDeDiez(numeros);
+console.log(mayores);
+ */
 /* 
 21:55
 Dado un array de objetos donde cada objeto tendra la propiedad 'D.N.I', 'Nombre Completo', 'Edad' transformarlo en un array de personas con las propiedades dni, nombre_completo, edad
@@ -88,4 +107,37 @@ EJ: [
     'Nombre Completo': 'Pepe suarez'
   }
 ]
-*/
+ */
+
+interface Persona {
+  dni: number;
+  nombre_completo: string;
+  edad: number;
+}
+
+interface PersonaCrudo { 
+  'D.N.I': number; 
+  'Nombre Completo': string; 
+  'Edad': number 
+}
+
+function transformarObjetosEnPersonas(personasCrudo: PersonaCrudo[]): Persona[] {
+  return personasCrudo.map(personaCrudo => {
+    return {
+      dni: personaCrudo['D.N.I'],
+      nombre_completo: personaCrudo['Nombre Completo'],
+      edad: personaCrudo['Edad']
+    }
+  });
+}
+
+
+const objetosArray = [
+  {
+    'D.N.I': 11222333,
+    'Edad': 30,
+    'Nombre Completo': 'Pepe suarez'
+  }
+];
+const personasArray = transformarObjetosEnPersonas(objetosArray);
+console.log(personasArray);
