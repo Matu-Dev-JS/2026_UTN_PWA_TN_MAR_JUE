@@ -24,3 +24,20 @@ function extraerNombre (persona: Persona) : void{
 
 extraerNombre(pepe)
 
+/* 
+DESAFIO PRACTICO: E-commerce
+
+Crear la class ItemTienda
+  -nombre
+  -precio
+  -id
+  -descripcion
+  -mostrarItem(): Mostrara por consola el mensaje: {nombre} es {descripcion} y cuesta ${precio} Pesos
+
+Crear la class Tienda
+  -nombre
+  -cantidad_dinero_en_cuenta
+  -items: ItemTienda[],
+  -id
+
+*/
