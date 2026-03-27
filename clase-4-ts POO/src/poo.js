@@ -78,16 +78,51 @@ else{
     console.log('No, juan no lo es')
 } */
 
+/* 
+propiedades, atributos => Definen el estado del objeto
+metodos => Definen el comportamiento del objeto
+*/
+
 //Class ES6
-class Persona {
+/* class Persona {
     constructor(nombre, edad){
         this.nombre = nombre
         this.edad = edad
         this.vida = 100
     }
+    //Metodos nos permiten definir el comportamiento de una entidad
+    //Los metodos se asocian directamente a la clase en la memoria NO al estado del objeto (propiedades)
+    presentarse(){
+        console.log("Hola mi nombre es " + this.nombre)
+    }
+
+    setVida(vida) {
+        this.vida = vida
+    }
+
+    caerse(metros){
+
+        //cada metro excepto el primero bajan 10 de daño
+        let danio_caida = (metros - 1) * 10
+        if(danio_caida >= this.vida){
+            console.log(this.nombre + ' a muerto por caida')
+        }
+        else{
+            this.setVida( this.vida - danio_caida )
+        }
+        
+    }
 }
-
-
+ */
+/* 
 const pepe = new Persona('pepe', 40)
-pepe.edad -= 1
-const maria = new Persona('maria', 63)
+const maria = new Persona('maria', 63) */
+
+
+//Solamente las instancias de persona pueden presentarse
+/* pepe.presentarse()
+maria.presentarse()
+
+pepe.caerse(12)
+
+console.log(pepe) */
