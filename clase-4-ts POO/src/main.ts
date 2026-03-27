@@ -27,6 +27,7 @@ extraerNombre(pepe)
 /* 
 DESAFIO PRACTICO: E-commerce
 
+21:40
 Crear la class ItemTienda
   -nombre
   -precio
@@ -34,10 +35,38 @@ Crear la class ItemTienda
   -descripcion
   -mostrarItem(): Mostrara por consola el mensaje: {nombre} es {descripcion} y cuesta ${precio} Pesos
 
+*/
+
+/* class ItemTienda{
+    nombre: string
+    precio: number
+    id: number
+    descripcion: string
+    constructor(nombre: string, precio: number, id: number, descripcion: string){
+        this.nombre = nombre
+        this.precio = precio
+        this.id = id
+        this.descripcion = descripcion
+    }
+    mostrarItem() : void{
+        console.log(`${this.nombre} es ${this.descripcion} y cuesta ${this.precio} pesos`)
+    }
+}
+const jarra = new ItemTienda('jarra', 20, 1, "marron, chico")
+jarra.mostrarItem() */
+
+
+/* 
+21:50
 Crear la class Tienda
   -nombre
-  -cantidad_dinero_en_cuenta
-  -items: ItemTienda[],
+  -cantidad_dinero_en_cuenta (Empieza en 0 pero se puede cargar)
+  -items: ItemTienda[] (Empieza vacio)
   -id
 
+  Agregar 2 o 3 items de ejemplo con un push
+    tienda.push( new ItemTienda(...) )
+
+  buscarItemPorId(id_item_buscado) 
+    -buscar en la lista de items el item buscado y devolvera el mismo, sino devolvera null
 */
