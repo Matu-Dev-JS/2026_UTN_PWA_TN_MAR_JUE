@@ -110,9 +110,42 @@ class ItemManager {
   }
 }
 
+
 const item_manager = new ItemManager()
 item_manager.agregar('Celular samsung s7 edge', 'Una masa')
 item_manager.agregar('Celular samsung s3', 'Otra masa')
 
 item_manager.listar()
 console.log(item_manager.obtenerPorId(1))
+
+
+class Transaccion {
+    id: number;
+    cantidad: number;
+    precio_unitario: number;
+    fecha: Date;
+    id_item: number;
+    constructor(id: number, cantidad: number, precio_unitario: number, id_item: number) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.precio_unitario = precio_unitario;
+        this.id_item = id_item
+        this.fecha = new Date();
+    }
+}
+
+class Venta extends Transaccion {
+    id_comprador: number;
+    constructor(id: number, cantidad: number, precio_unitario: number, id_item: number, id_comprador: number) {
+        super(id, cantidad, precio_unitario, id_item);
+        this.id_item = id_item;
+        this.id_comprador = id_comprador;
+    }
+}
+class Compra extends Transaccion {
+    id_vendedor: number;
+    constructor(id: number, cantidad: number, precio_unitario: number, id_vendedor: number, id_item: number) {
+        super(id, cantidad, precio_unitario, id_item);
+        this.id_vendedor = id_vendedor;
+    }
+}
