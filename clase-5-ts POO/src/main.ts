@@ -1,14 +1,14 @@
-class Persona{
+class Persona {
   nombre: string
   edad: number
   vida: number
-  constructor(nombre: string, edad: number){
+  constructor(nombre: string, edad: number) {
     this.nombre = nombre
     this.edad = edad
     this.vida = 100
   }
 
-  presentarse(): void{
+  presentarse(): void {
     console.log(`Hola mi nombre es ${this.nombre}`)
   }
 
@@ -16,7 +16,7 @@ class Persona{
     console.log(`${this.nombre} ha saltado 1 vez`)
   }
 
-  decirNumeroFavorito(): number{
+  decirNumeroFavorito(): number {
     return 1
   }
 
@@ -33,7 +33,7 @@ extends es una palabra reservada que se usa para marcar que cierta clase provien
 super es la invocacion de la funcion constructora de la clase que estoy heredando
 
 */
-
+/* 
 class SuperPersona extends Persona {
   superpoder: string
   constructor(nombre: string, edad: number, superpoder: string){
@@ -48,15 +48,13 @@ class SuperPersona extends Persona {
   }
 
   //Si vas a modificar un metodo existente tienen que tener los mismos contratos que el metodo original
- /*  saltar(): void {
-    console.log(`El superheroe ${this.nombre} ha saltado`)
-  } */
+
   decirNumeroFavorito(): number {
     return 5
   }
-}
+} */
 
-const juan = new SuperPersona('Juan', 30, 'Telekinesis')
+/* const juan = new SuperPersona('Juan', 30, 'Telekinesis')
 const pepe = new Persona('Pepe', 50)
 juan.presentarse()
 juan.saltar()
@@ -72,3 +70,49 @@ for(let persona of publico){
 }
 
 console.log("El total de numeros favoritos del publico es " + total)
+
+class Personas {
+  personas: Persona[]
+  constructor(){
+    this.personas = []
+  }
+} */
+
+class Item {
+  id: number
+  titulo: string
+  descripcion: string
+  constructor(id: number, titulo: string, descripcion: string) {
+    this.id = id
+    this.titulo = titulo
+    this.descripcion = descripcion
+  }
+  describir(): void {
+    console.log(`Producto: ${this.titulo}   Descripcion: ${this.descripcion}`)
+  }
+}
+
+class ItemManager {
+  global: Item[] = [];
+  id_counter: number = 0;
+
+  listar(): void {
+    console.log(this.global);
+  }
+  agregar(titulo: string, descripcion: string): void {
+    let id = this.id_counter++;
+    const item_creado = new Item(id, titulo, descripcion)
+    this.global.push(item_creado);
+  }
+  obtenerPorId(id: number): Item | null {
+    const itemEncontrado = this.global.find((item) => item.id === id);
+    return itemEncontrado || null
+  }
+}
+
+const item_manager = new ItemManager()
+item_manager.agregar('Celular samsung s7 edge', 'Una masa')
+item_manager.agregar('Celular samsung s3', 'Otra masa')
+
+item_manager.listar()
+console.log(item_manager.obtenerPorId(1))

@@ -11,6 +11,8 @@
 - obtenerPorId(item_id){} retorna el item
 - agregar(title, descripcion) Añade el item al sistema
 
+Para cuando tengamos tiendas
+
 ## ItemTienda
 Manejar un item dentro de una Tienda
 - id
@@ -19,17 +21,28 @@ Manejar un item dentro de una Tienda
 - precio
 - stock
 
-## Venta
+## Transaccion: Define la transaccion de un item de un usuario a otro
 - id
 - id_item
+- cantidad
+- precio_unitario
+- fecha (Fecha actual new Date, tipo Date)
+
+## Venta
 - id_comprador (numero para identificar quien compro)
+
+- id
+- id_item
 - cantidad
 - precio_unitario
 - fecha (Fecha actual new Date, tipo Date)
 
 ## Compra
-- id
 - id_vendedor
+
+- id
+- id_item
 - cantidad
 - precio_unitario
 - fecha (Fecha actual new Date, tipo Date)
+
