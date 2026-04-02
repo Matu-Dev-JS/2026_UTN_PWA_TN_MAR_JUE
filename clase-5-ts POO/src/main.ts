@@ -149,3 +149,107 @@ class Compra extends Transaccion {
         this.id_vendedor = id_vendedor;
     }
 }
+
+
+class ItemTienda extends Item {
+    precio: number;
+    stock: number;
+    constructor(id: number, titulo: string, descripcion: string, precio: number, stock: number) {
+        super(id, titulo, descripcion);
+        this.precio = precio;
+        this.stock = stock;
+    }
+    describir(): void {
+        console.log(`[Tienda #${this.id}] ${this.titulo} cuesta $${this.precio}. Stock: ${this.stock}`);
+    }
+}
+
+class Tienda {
+    nombre: string;
+    dinero: number;
+    inventario: ItemTienda[] = [];
+    lista_ventas: Venta[] = [];
+    lista_compras: Compra[] = [];
+    generador_id_transacciones: number = 1;
+
+    constructor(nombre: string, dinero_inicial: number) {
+        this.nombre = nombre;
+        this.dinero = dinero_inicial;
+    }
+
+    obtenerItemPorId (id_item: number): ItemTienda | undefined {
+      const itemEnInventario = this.inventario.find(item => item.id === id_item);
+      return itemEnInventario
+    } 
+
+    comprar(
+      id_item: number, 
+      precio_unitario: number, 
+      cantidad: number, 
+      margen_esperado: number,
+      id_vendedor: number = 1
+    ): void {
+        const costoTotal = precio_unitario * cantidad;
+
+        //Checkeo si tengo el dinero
+        if (this.dinero < costoTotal) {
+            console.log("Error: Dinero insuficiente");
+            return;
+        }
+
+        //Resto el dinero
+        this.dinero -= costoTotal;
+        //Genero el registro de la compra
+        
+
+        this.registrarCompra(cantidad, precio_unitario, id_item, id_vendedor)
+
+        
+        const nuevoPrecioVenta = precio_unitario * margen_esperado;
+        const itemEnInventario = this.obtenerItemPorId(id_item)
+        if (itemEnInventario) {
+            itemEnInventario.precio = nuevoPrecioVenta;
+            itemEnInventario.stock += cantidad;
+        } else {
+            const itemBase = item_manager.obtenerPorId(id_item);
+            if (itemBase) {
+                const nuevoItemTienda = new ItemTienda(itemBase.id, itemBase.titulo, itemBase.descripcion, nuevoPrecioVenta, cantidad);
+                this.inventario.push(nuevoItemTienda);
+            }
+        }
+    }
+
+    registrarCompra(cantidad: number, precio_unitario: number, id_item: number, id_vendedor: number){
+      const nuevaCompra = new Compra(this.generador_id_transacciones, cantidad, precio_unitario, id_item, id_vendedor);
+      this.lista_compras.push(nuevaCompra);
+      return this.generador_id_transacciones++
+    }
+
+    
+
+    vender(id_item: number, cantidad: number, id_comprador: number): void {
+
+        const itemEnInventario = this.obtenerItemPorId(id_item);
+
+        if (!itemEnInventario) {
+            console.log("Error: El producto no existe en nuestro inventario.");
+            return;
+        }
+
+        if (itemEnInventario.stock < cantidad) {
+            console.log(`Error: Stock insuficiente. Solo quedan ${itemEnInventario.stock} unidades.`);
+            return;
+        }
+
+        const ingresoTotal = itemEnInventario.precio * cantidad;
+        this.dinero += ingresoTotal;
+        itemEnInventario.stock -= cantidad;
+
+        //registrarVenta / registrarTransaccion
+        const nuevaVenta = new Venta(this.generador_id_transacciones, cantidad, itemEnInventario.precio, id_item, id_comprador);
+        this.lista_ventas.push(nuevaVenta);
+        this.generador_id_transacciones++;
+
+        console.log(`Venta realizada. Ingreso: $${ingresoTotal}. Stock restante: ${itemEnInventario.stock}`);
+    }
+}
