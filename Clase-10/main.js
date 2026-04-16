@@ -28,6 +28,7 @@ const new_users_JSON = JSON.stringify(users)
 Filesystem.writeFileSync('users.json', new_users_JSON) */
 
 /* 
+15/20 MIN
 Crear un archivo llamado products.json con el valor [] (Osea empieza como array vacio)
 Crear una clase llamada ProductsManager 
 con 2 metodos:
