@@ -1,0 +1,16 @@
+{
+  "name": "clase-10",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "pepe": "echo \"Hi\"",
+    "dev": "node --watch main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "matu.dev",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": ""
+}
