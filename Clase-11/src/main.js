@@ -1,3 +1,4 @@
+import ENVIRONMENT from "./config/environment.js";
 import { sumar } from "./math.js";
 
-console.log(sumar(1, 2))
+console.log(ENVIRONMENT.MONGO_DB_CONNECTION_STRING)

@@ -11,5 +11,9 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongoose": "^9.5.0"
+  }
 }
