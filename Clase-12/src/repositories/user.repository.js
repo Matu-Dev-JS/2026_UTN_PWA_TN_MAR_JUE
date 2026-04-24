@@ -1,6 +1,10 @@
 import User from "../models/user.model.js";
 
 class UserRepository {
+    async getAll (){
+        return await User.find({activo: true})
+    }
+
     async getById(user_id){
         return await User.findById(user_id)
     }
