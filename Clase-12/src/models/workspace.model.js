@@ -1,0 +1,1 @@
+/* Generar el modelo de mongoose de workspace  */

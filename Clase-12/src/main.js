@@ -20,9 +20,9 @@ connectMongoDB()
     }
 ) */
 
-userRepository.getById('69eaa482681999efac4eb3bd')
+/* userRepository.getById('69eaa482681999efac4eb3bd')
 .then(
     (resultado) => {
         console.log(resultado)
     }
-)
+) */
