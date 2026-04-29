@@ -48,6 +48,7 @@ connectMongoDB()
 workspaceMemberRepository.getByWorkspaceId('69f14d6b8dc2e2fa8a6fa1be').then(result => {
 
     console.log(result)
+    result
 })
 .catch(error => {
     console.log("error", error)

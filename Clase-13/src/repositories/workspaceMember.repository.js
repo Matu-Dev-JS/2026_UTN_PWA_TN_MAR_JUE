@@ -28,7 +28,7 @@ class WorkspaceMemberRepository {
     async getByWorkspaceId(workspace_id) {
         //Lista de membresias por x espacio de trabajo
         const result = await WorkspaceMember
-            .find({fk_workspace_id: workspace_id})
+            .find({ fk_workspace_id: workspace_id })
             //Populate sirve para poder expandir una cierta propiedad
             //Cuando expandimos basicamente estamos trayendo los datos referenciados a esa propiedad
             //Solo podemos expandir las propiedades que en el modelo fueron marcadas como referencias
@@ -37,17 +37,7 @@ class WorkspaceMemberRepository {
             )
 
         const members_mapped = result.map(
-            (member) => {
-                return {
-                    member_id: member._id,
-                    member_fk_workspace_id: member.fk_workspace_id,
-                    member_rol: member.rol,
-                    member_fecha_creacion: member.fecha_creacion,
-                    user_id: member.fk_user_id._id,
-                    user_nombre: member.fk_user_id.nombre,
-                    user_email: member.fk_user_id.email
-                }
-            }
+            (member) => new MemberWorkspaceWithUserInfo(member)
         )
         return members_mapped
     }
@@ -61,3 +51,18 @@ class WorkspaceMemberRepository {
 const workspaceMemberRepository = new WorkspaceMemberRepository()
 
 export default workspaceMemberRepository
+
+
+class MemberWorkspaceWithUserInfo {
+    constructor(
+        raw_member
+    ) {
+        this.user_id = raw_member._id
+        this.member_fk_workspace_id = raw_member.fk_workspace_id,
+        this.member_rol = raw_member.rol,
+        this.member_fecha_creacion = raw_member.fecha_creacion,
+        this.user_id = raw_member.fk_user_id._id,
+        this.user_nombre = raw_member.fk_user_id.nombre,
+        this.user_email = raw_member.fk_user_id.email
+    }
+}
