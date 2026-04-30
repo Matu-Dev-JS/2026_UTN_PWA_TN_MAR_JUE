@@ -30,6 +30,15 @@ import ENVIRONMENT from './config/environment.config.js'
 //Creamos una app de express (Servidor web)
 const app = express()
 
+app.get(
+    '/api/test', 
+    (request, response) => {
+        console.log("Llego una consulta de test")
+        response.send("<h1>Respuesta de prueba</h1>")
+    }
+)
+
+
 app.listen(
     ENVIRONMENT.PORT,
     () => {
