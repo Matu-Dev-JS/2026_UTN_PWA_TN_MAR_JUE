@@ -24,14 +24,15 @@ Para este tipo de aplicaciones necesitamos saber hacer un SERVIDOR WEB y el fram
 */
 
 import express from 'express'
+import ENVIRONMENT from './config/environment.config.js'
 
 
 //Creamos una app de express (Servidor web)
 const app = express()
 
 app.listen(
-    8080,
+    ENVIRONMENT.PORT,
     () => {
-        console.log('Nuestra app de express se ejecuta correctamente en el puerto 8080')
+        console.log(`Nuestra app de express se ejecuta correctamente en el puerto ${ENVIRONMENT.PORT}`)
     }
 )
