@@ -30,13 +30,58 @@ import ENVIRONMENT from './config/environment.config.js'
 //Creamos una app de express (Servidor web)
 const app = express()
 
+/* 
+Si el servidor recibe un JSON por medio del body de la consulta, express ejecutara una transformacion del JSON a objeto de JS
+*/
+app.use(express.json())
+
+import fs from 'fs'
+app.post(
+    '/api/test', 
+    (request, response) => {
+        console.log('Body de la consulta:', request.body)
+   
+        return response.send("<h1>Respuesta de prueba</h1>")
+    }
+)
+
 app.get(
     '/api/test', 
     (request, response) => {
         console.log("Llego una consulta de test")
-        response.send("<h1>Respuesta de prueba</h1>")
+        return response.send("<h1>Respuesta de prueba</h1>")
     }
 )
+
+app.get(
+    '/api/test/:test_id',
+    (request, response) => {
+        const {test_id} = request.params
+        console.log("Se busca el test con id " + test_id)
+        return response.send('Aca tenes la info')
+    }
+)
+
+app.get(
+    '/api/users',
+    (request, response) => {
+        const { limit, search_value } = request.query
+        console.log(`Se buscan hasta ${limit} usuarios con el termino de busqueda ${search_value}`)
+        return response.send('Resultado')
+    }
+)
+
+
+/* 
+Metodos HTTP:
+    - Get => Obtener informacion del servidor
+    - Post => Crear un recurso en el servidor
+    - Put => Actualizar un recurso existente en el servidor
+    - Delete => Eliminar un recurso del servidor
+
+Los metodos NO GARANTIZAN que realmente el servidor los este usando de forma correcta, es decir un get podria crear recursos en el servidor, un delete actualizar y un post obtener.
+Pero es una BUENA PRACTICA seguir las recomendaciones
+*/
 
 
 app.listen(
