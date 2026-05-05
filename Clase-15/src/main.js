@@ -96,14 +96,16 @@ PRACTICA EXPRESS
 En la aplicacion existira un archivo products.json que guardara la lista de productos, inicialmente vacia
 Cada producto tendra titulo, precio, id, descripcion
 
-
-GET /api/products => La lista de productos
-GET /api/products/:product_id => 
-    La informacion de un producto
-    Si no existe el producto devuelve un mensaje del estilo "El producto no existe"
 POST /api/products => 
     Crea un nuevo producto 
     Validar que nos envien un titulo, descripcion (opcional, puede ser '') y precio (numerico)
+    
+GET /api/products => La lista de productos
+
+GET /api/products/:product_id => 
+    La informacion de un producto
+    Si no existe el producto devuelve un mensaje del estilo "El producto no existe"
+
 DELETE /api/products/:product_id => Elimina un producto
     Validar que exista
         Si existe: Eliminar el producto
