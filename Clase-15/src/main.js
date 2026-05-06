@@ -26,6 +26,8 @@ Para este tipo de aplicaciones necesitamos saber hacer un SERVIDOR WEB y el fram
 import express from 'express'
 import ENVIRONMENT from './config/environment.config.js'
 
+import products_repository from './repositories/product.repository.js'
+
 
 //Creamos una app de express (Servidor web)
 const app = express()
@@ -35,18 +37,18 @@ Si el servidor recibe un JSON por medio del body de la consulta, express ejecuta
 */
 app.use(express.json())
 
-import fs from 'fs'
+
 app.post(
-    '/api/test', 
+    '/api/test',
     (request, response) => {
         console.log('Body de la consulta:', request.body)
-   
+
         return response.send("<h1>Respuesta de prueba</h1>")
     }
 )
 
 app.get(
-    '/api/test', 
+    '/api/test',
     (request, response) => {
         console.log("Llego una consulta de test")
         return response.send("<h1>Respuesta de prueba</h1>")
@@ -56,7 +58,7 @@ app.get(
 app.get(
     '/api/test/:test_id',
     (request, response) => {
-        const {test_id} = request.params
+        const { test_id } = request.params
         console.log("Se busca el test con id " + test_id)
         return response.send('Aca tenes la info')
     }
@@ -65,9 +67,22 @@ app.get(
 app.get(
     '/api/users',
     (request, response) => {
-        const { limit, search_value } = request.query
-        console.log(`Se buscan hasta ${limit} usuarios con el termino de busqueda ${search_value}`)
-        return response.send('Resultado')
+        try{
+
+            p
+            const { limit, search_value } = request.query
+            console.log(`Se buscan hasta ${limit} usuarios con el termino de busqueda ${search_value}`)
+            return response.send({ mensaje: 'Resultado', result: [] })
+        }
+        catch(error){
+            console.log('ERROR', error)
+            return response.send(
+                {
+                    ok:false,
+                    message: 'Error interno del servidor'
+                }
+            )
+        }
     }
 )
 
@@ -99,7 +114,7 @@ Cada producto tendra titulo, precio, id, descripcion
 POST /api/products => 
     Crea un nuevo producto 
     Validar que nos envien un titulo, descripcion (opcional, puede ser '') y precio (numerico)
-    
+
 GET /api/products => La lista de productos
 
 GET /api/products/:product_id => 
@@ -115,3 +130,81 @@ Recomendacion personal:
     Primero armar toda la logica de manejo de productos. 
     Luego armar cada endpoint e ir probando 1 a 1 a medida se van creando con postman
 */
+
+/* 
+ERRORES CONTROLADOS
+    Aquellos que esperamos que sucedan y podemos prevenir
+    En contexto de servidor van a ser los errores que sean ServerError
+ERRORES NO CONTROLADOS
+    Aquellos que no esperamos que sucedan
+*/
+
+class ServerError extends Error {
+    constructor(message, status) {
+        super(message)
+        this.status = status
+    }
+}
+
+
+app.post('/api/products', (request, response) => {
+    try {
+        const body = request.body
+        if (!body.titulo || !body.precio) {
+            throw new ServerError(
+                "El titulo y el precio son obligatorios",
+                400
+            )
+             
+        }
+        if (body.titulo === '') {
+            throw new ServerError(
+                "El titulo es obligatorio",
+                400
+            )
+        }
+        if (isNaN(body.precio)) {
+            throw new ServerError(
+                "El precio debe ser un numero",
+                400
+            )
+        }
+        if (!body.descripcion || body.descripcion === '') {
+            body.descripcion = ''
+        }
+        const new_product = products_repository.create(
+            {
+                titulo: body.titulo,
+                precio: body.precio,
+                descripcion: body.descripcion
+            }
+        )
+        return response.send(
+            {
+                ok: true,
+                message: "Producto creado",
+                data: {
+                    new_product: new_product
+                }
+            }
+        )
+    }
+    catch (error) {
+        if (error instanceof ServerError) {
+            return response.status(error.status).send(
+                {
+                    ok: false,
+                    message: error.message
+                }
+            )
+        }
+        console.log(error)
+        return response.status(500).send(
+            {
+                ok: false,
+                message: "Error interno del servidor"
+            }
+        )
+    }
+
+})
