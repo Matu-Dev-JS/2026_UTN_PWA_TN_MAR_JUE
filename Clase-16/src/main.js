@@ -29,6 +29,7 @@ import ENVIRONMENT from './config/environment.config.js'
 import products_repository from './repositories/product.repository.js'
 import ServerError from './helpers/serverError.helper.js'
 import product_router from './routes/product.route.js'
+import mailer_transport from './config/mailer.config.js'
 
 
 //Creamos una app de express (Servidor web)
@@ -80,3 +81,24 @@ Recomendacion personal:
 
 //Cualquier consulta que tenga el prefijo /api/products se va a delegar a product_router
 app.use('/api/products', product_router)
+
+/* mailer_transport.sendMail(
+    {
+        from: "mati.dev.gimenez@gmail.com",
+        to: "mati.dev.gimenez@gmail.com",
+        subject: "Prueba desde node.js",
+        html: `
+            <h1>Hola mundo desde node.js</h1>
+        `,
+        attachments: [
+            {
+                filename: 'test.txt',
+                content: 'hola mundo'
+            },
+            {
+                path: './test.txt',
+                filename: 'test-2.txt'
+            }
+        ]
+    }
+) */
