@@ -7,7 +7,8 @@ dotenv.config()
 const ENVIRONMENT = {
     MONGO_DB_CONNECTION_STRING: process.env.MONGO_DB_CONNECTION_STRING,
     MONGO_DB_NAME: process.env.MONGO_DB_NAME,
-    MODE: process.env.MODE
+    MODE: process.env.MODE,
+    PORT: process.env.PORT
 }
 
 export default ENVIRONMENT

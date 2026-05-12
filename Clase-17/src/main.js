@@ -1,14 +1,11 @@
 import ENVIRONMENT from "./config/environment.config.js";
 import connectMongoDB from "./config/mongodb.config.js";
-import { sumar } from "./math.js";
-import User from "./models/user.model.js";
+import express from "express";
 
 /* SOLO EN LOCAL Y SI TENER PROBLEMAS DE DNS PARA CONECTARTE A MONGODB */
 import dns from 'dns';
-import userRepository from "./repositories/user.repository.js";
-import workspaceMemberRepository from "./repositories/workspaceMember.repository.js";
-import workspaceRepository from "./repositories/workspace.repository.js";
-import { MEMBER_WORKSPACE_ROLES } from "./constants/memberRoles.constant.js";
+import authRouter from "./routes/auth.router.js";
+
 
 if(ENVIRONMENT.MODE === 'development'){
     dns.setServers(['8.8.8.8', '8.8.4.4']);
@@ -19,13 +16,14 @@ connectMongoDB()
 /* 
 Crear una API de express
 Route:
-    /api/auth
+    /api/auth => Trabaja todo lo relacionado a autentificacion
         POST /register
             body: {name, email, password}
-            Crear un usuario en la DB
             Validar que el usuario tenga nombre mayor a 2 caracteres
             Validar email
             Validar password con almenos 6 caracteres 
+            Crear un usuario en la DB
+        
 
 
 
@@ -43,6 +41,14 @@ RECOMENDACION:
 */
 
 
-.catch(error => {
-    console.log("error", error)
-})
+const app = express();
+const PORT = ENVIRONMENT.PORT;
+
+// Parse JSON
+app.use(express.json());
+
+app.use('/api/auth', authRouter);
+
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
