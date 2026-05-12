@@ -32,6 +32,14 @@ Route:
 Mas Adelante...
         POST /login
         
+RECOMENDACION:
+    El controller puede ser asincrono!!
+    authRouter.post(
+        '/register', 
+        async (request, response) => {
+            await userRepository.create('pepe')
+        }
+    )
 */
 
 
