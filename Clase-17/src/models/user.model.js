@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        email_verificado: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
         fecha_creacion: {
             type: Date,
             required: true,
