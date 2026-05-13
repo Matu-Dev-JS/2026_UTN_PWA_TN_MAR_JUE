@@ -1,3 +1,5 @@
+import ENVIRONMENT from "../config/environment.config.js";
+import mailer_transport from "../config/mailer.config.js";
 import ServerError from "../helpers/serverError.helper.js";
 import userRepository from "../repositories/user.repository.js";
 import bcrypt from 'bcrypt'
@@ -28,6 +30,18 @@ class AuthController {
             const hashed_password = await bcrypt.hash(password, 12);
 
             const newUser = await userRepository.create(name, email, hashed_password);
+
+            await mailer_transport.sendMail(
+                {
+                    to: email,
+                    from: ENVIRONMENT.GMAIL_USERNAME,
+                    subject: "Verifica tu mail",
+                    html: `
+                        <h1>Bienvenido a SLACK</h1>
+                        <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?email=${email}'>Click aqui</a> para verificar tu cuenta
+                    `
+                }
+            )
 
             return res.status(201).json({
                 message: "Usuario registrado con éxito",
