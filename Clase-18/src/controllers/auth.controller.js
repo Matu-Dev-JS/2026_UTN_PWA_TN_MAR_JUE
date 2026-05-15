@@ -151,6 +151,76 @@ class AuthController {
 
         }
     }
+
+    async login(request, response){
+        try{
+            const {email, password} = request.body
+
+            if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+                throw new ServerError("Email inválido", 400)
+            }
+
+            if (!password || password.length < 6) {
+                throw new ServerError("Contraseña invalida", 400)
+            }
+
+            const user_found = await userRepository.getByEmail(email)
+
+            if(!user_found){
+                throw new ServerError("Usuario no registrado", 404)
+            }
+
+            if(!user_found.email_verificado){
+                throw new ServerError("Usuario con verificacion de mail pendiente", 401)
+            }
+
+            const is_same_password = await bcrypt.compare(password, user_found.password)
+
+            if(!is_same_password){
+                throw new ServerError("Credenciales invalidas", 401)
+            }
+
+            const profile_info = {
+                nombre: user_found.nombre,
+                email: user_found.email,
+                id: user_found._id,
+                fecha_creacion: user_found.fecha_creacion
+            }
+
+            const access_token = jwt.sign(
+                profile_info,
+                ENVIRONMENT.JWT_SECRET
+            )
+
+            return response.status(200).json({
+                ok:true,
+                status: 200,
+                message: 'Usuario autentificado exitosamente',
+                data: {
+                    access_token
+                }
+            })
+        }
+        catch(error){
+            if (error instanceof ServerError) {
+                return response.status(error.status).json(
+                    {
+                        message: error.message,
+                        ok: false,
+                        status: error.status
+                    }
+                )
+            }
+            else {
+                console.error('Error critico:', error);
+                return response.status(500).json({
+                    message: "Error interno del servidor",
+                    ok: false,
+                    status: 500
+                });
+            }
+        }
+    }
 }
 
 const authController = new AuthController();
@@ -168,7 +238,7 @@ POST /api/auth/login
     body: {email, password}
 
     - Buscar al usuario por email
-    - Validar la contraseña ( bcrypt.compare(texto_original, texto_hasheado) esto devolvera un booleano)
+    - Validar la contraseña (await bcrypt.compare(texto_original, texto_hasheado) esto devolvera un booleano)
     - Crear un jsonwebtoken con los datos de sesion del usuario (username, email, id, created_at)
     - responder con ese token (access_token) al cliente
 */
