@@ -3,6 +3,7 @@ import mailer_transport from "../config/mailer.config.js";
 import ServerError from "../helpers/serverError.helper.js";
 import userRepository from "../repositories/user.repository.js";
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class AuthController {
     async register(req, res) {
@@ -31,6 +32,13 @@ class AuthController {
 
             const newUser = await userRepository.create(name, email, hashed_password);
 
+            const verification_token = jwt.sign(
+                {
+                    email: email
+                },
+                ENVIRONMENT.JWT_SECRET
+            )
+
             await mailer_transport.sendMail(
                 {
                     to: email,
@@ -38,7 +46,7 @@ class AuthController {
                     subject: "Verifica tu mail",
                     html: `
                         <h1>Bienvenido a SLACK</h1>
-                        <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?email=${email}'>Click aqui</a> para verificar tu cuenta
+                        <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?verification_token=${verification_token}'>Click aqui</a> para verificar tu cuenta
                     `
                 }
             )
@@ -80,12 +88,13 @@ class AuthController {
 
     async verifyEmail(req, res) {
         try {
-            const { email } = req.query;
+            const { verification_token } = req.query;
 
-            if (!email) {
-                throw new ServerError("Falta el email de verificación", 400);
+            if (!verification_token) {
+                throw new ServerError("Falta token de verificación", 400);
             }
-
+            const payload = jwt.verify(verification_token, ENVIRONMENT.JWT_SECRET)
+            const {email} = payload
             const user = await userRepository.getByEmail(email);
 
             if (!user) {
@@ -106,7 +115,16 @@ class AuthController {
 
         }
         catch (error) {
-            if (error instanceof ServerError) {
+            if( error instanceof jwt.JsonWebTokenError ){
+                return res.status(401).json(
+                    {
+                        message: "Token invalido",
+                        ok: false,
+                        status: 401
+                    }
+                )
+            }
+            else if (error instanceof ServerError) {
                 return res.status(error.status).json(
                     {
                         message: error.message,
@@ -159,4 +177,8 @@ Crear el endpoint dentro de la route /api/auth
         Valida que no este verificado aun
         Cambia el verificado a verdadero
         Responde exitosamente
+
+
+        /api/verify?email=pepe@gmail.com&nombre=pepe&id=50
+        const {email, nombre, id} = req.query //email = pepe@gmail.com, nombre = pepe, id = 50
 */
