@@ -161,31 +161,14 @@ export default authController
 
 /* 
 
-COMO VALIDAR UN MAIL?
-El usuario se registra con un x mail
-El sistema envia un mail con un link tipo 
-    <a 
-        href='${URL_BACKEND + '/api/auth/verify-email?email=${email}'}'
-    >
-        click aqui para verificar
-    </a>
-Cuando el usuario de click a ese link estara emitiendo un GET /api/auth/verify-email?email=pepe@gmail.com desde su navegador
-Nosotros recibimos la consulta y cambiamos la propiedad email_verificado a true en la DB
+Como manejar un inicio de sesion?
 
-CONSIGNA: 
-Agregar la propiedad booleana 'email_verificado' sobre el usuario en el modelo de mongoose.
+Vamos a tener un endpoint 
+POST /api/auth/login
+    body: {email, password}
 
-En el controller de register, luego de crear el usuario, enviar un mail con el link de verificacion.
-
-Crear el endpoint dentro de la route /api/auth
-    GET /verify-email 
-        Recibe una querystring llamada email (req.query)
-        Valida que el email exista
-        Valida que no este verificado aun
-        Cambia el verificado a verdadero
-        Responde exitosamente
-
-
-        /api/verify?email=pepe@gmail.com&nombre=pepe&id=50
-        const {email, nombre, id} = req.query //email = pepe@gmail.com, nombre = pepe, id = 50
+    - Buscar al usuario por email
+    - Validar la contraseña ( bcrypt.compare(texto_original, texto_hasheado) esto devolvera un booleano)
+    - Crear un jsonwebtoken con los datos de sesion del usuario (username, email, id, created_at)
+    - responder con ese token (access_token) al cliente
 */
