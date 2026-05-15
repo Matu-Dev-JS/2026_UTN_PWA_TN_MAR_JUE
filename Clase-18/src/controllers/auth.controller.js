@@ -115,7 +115,14 @@ class AuthController {
 
         }
         catch (error) {
-            if( error instanceof jwt.JsonWebTokenError ){
+            console.log(error)
+            if( 
+                error instanceof jwt.JsonWebTokenError 
+                || 
+                error instanceof jwt.NotBeforeError 
+                || 
+                error instanceof jwt.TokenExpiredError 
+            ){
                 return res.status(401).json(
                     {
                         message: "Token invalido",
