@@ -71,7 +71,10 @@ app.get(
     }, */
     authMiddleware,
     (request, response) => {
-        console.log("SE ACTIVA EL CONTROLADOR")
+        console.log(
+            'Nombre del cliente:',
+            request.user.nombre
+        )
         return response.json({
             ok: true,
             status: 200,
