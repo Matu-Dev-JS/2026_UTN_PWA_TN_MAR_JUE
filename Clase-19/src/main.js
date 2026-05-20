@@ -52,6 +52,26 @@ app.use('/api/auth', authRouter);
 
 
 /* 
+Ruta: /api/workspace
+
+
+    controlador: workspaceController
+        post() Debe estar con el authMiddleware
+            Validar nombre y descripcion (opcional)
+            Crear un espacio de trabajo
+            Crear una membresia de role tipo 'dueño' a nombre del id del cliente consultante.
+            
+            body: {
+                nombre,
+                descripcion
+            }
+            
+
+*/
+
+
+
+/* 
 Un endpoint donde el cliente debera enviarnos por header de autorizacion el access token, en caso de estar presente y ser correcto
 Le daremos los datos de la cuenta
 */
